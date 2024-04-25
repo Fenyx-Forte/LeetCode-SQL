@@ -45,3 +45,52 @@ inner join
       d.id = re.departmentid
 where
   re.salary_rank <= 3;
+
+
+
+
+
+with ranking as (
+  select
+      e.name as emp
+    , d.name as dep
+    , e.salary
+    , dense_rank() over (
+        partition by
+          d.id
+        order by
+          e.salary desc
+      ) as salary_rank
+  from
+    department as d
+  inner join
+    employee as e
+      on
+        d.id = e.departmentid
+)
+select
+    r.dep as Department
+  , r.emp as Employee
+  , r.salary as Salary
+from
+  ranking as r
+where
+  salary_rank <= 3;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

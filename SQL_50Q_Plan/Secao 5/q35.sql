@@ -39,3 +39,42 @@ where
 order by
   c.turn desc
 limit 1;
+
+
+
+
+
+
+with cumulative_weight as (
+  select
+      q.turn
+    , q.person_name
+    , sum(q.weight) over(
+        order by
+          q.turn asc
+      ) as cumulative_weight
+  from
+    queue as q
+)
+select
+  c.person_name
+from
+  cumulative_weight as c
+where
+  c.cumulative_weight <= 1000
+order by
+  c.turn desc
+limit 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
